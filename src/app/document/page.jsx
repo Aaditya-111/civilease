@@ -6,6 +6,7 @@ import { useGemini } from "@/hooks/useGemini";
 import { useSpeech } from "@/hooks/useSpeech";
 import { CheckCircle2, Building2, Volume2, VolumeX, ArrowLeft, FileText, Share2, AlertCircle } from "lucide-react";
 import mermaid from "mermaid";
+import { ChatAssistant } from "@/components/shared/ChatAssistant";
 
 export default function DocumentResultPage() {
   const router = useRouter();
@@ -60,7 +61,10 @@ export default function DocumentResultPage() {
     }
   };
 
+  const documentContextStr = `Summary: ${result.simplified_summary || "None"}\nSteps: ${result.procedural_requirements?.verification_steps?.join(", ") || "None"}`;
+
   return (
+    <>
     <div className="min-h-screen bg-surface py-12 px-8 overflow-y-auto">
       <div className="max-w-7xl mx-auto pb-32">
         
@@ -211,5 +215,7 @@ export default function DocumentResultPage() {
       </div>
     </div>
   </div>
+  <ChatAssistant documentContext={documentContextStr} />
+  </>
 );
 }
