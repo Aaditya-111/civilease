@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ChatAssistant } from "@/components/ChatAssistant";
+import { ChatAssistant } from "@/components/shared/ChatAssistant";
 import "./globals.css";
 
 export const metadata = {
