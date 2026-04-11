@@ -28,21 +28,21 @@ export default function Footer() {
             </p>
           </div>
           <div>
-            <h4 className="font-bold mb-6 font-headline text-white uppercase text-xs tracking-widest">Explore</h4>
+            <h4 className="font-bold mb-6 font-headline text-white uppercase text-xs tracking-widest">Platform</h4>
             <ul className="space-y-4 text-sm text-white/60">
-              <li><Link className="hover:text-secondary transition-colors" href="#">Digital India</Link></li>
-              <li><Link className="hover:text-secondary transition-colors" href="#">Citizen Services</Link></li>
-              <li><Link className="hover:text-secondary transition-colors" href="#">Data Privacy</Link></li>
-              <li><Link className="hover:text-secondary transition-colors" href="#">Help Center</Link></li>
+              <li><Link className="hover:text-secondary transition-colors" href="/">Home</Link></li>
+              <li><Link className="hover:text-secondary transition-colors" href="/solutions">Solutions</Link></li>
+              <li><Link className="hover:text-secondary transition-colors" href="/governance">Governance</Link></li>
+              <li><Link className="hover:text-secondary transition-colors" href="/resources">Resources</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-bold mb-6 font-headline text-white uppercase text-xs tracking-widest">Connect</h4>
+            <h4 className="font-bold mb-6 font-headline text-white uppercase text-xs tracking-widest">Ecosystem</h4>
             <ul className="space-y-4 text-sm text-white/60">
-              <li><Link className="hover:text-secondary transition-colors" href="#">MyGov Portal</Link></li>
-              <li><Link className="hover:text-secondary transition-colors" href="#">NIC Cloud</Link></li>
-              <li><Link className="hover:text-secondary transition-colors" href="#">Twitter (X)</Link></li>
-              <li><Link className="hover:text-secondary transition-colors" href="#">LinkedIn</Link></li>
+              <li><Link className="hover:text-secondary transition-colors" href="https://mygov.in" target="_blank">MyGov Portal</Link></li>
+              <li><Link className="hover:text-secondary transition-colors" href="https://india.gov.in" target="_blank">National Portal</Link></li>
+              <li><Link className="hover:text-secondary transition-colors" href="https://digitalindia.gov.in" target="_blank">Digital India</Link></li>
+              <li><Link className="hover:text-secondary transition-colors" href="https://ecourts.gov.in" target="_blank">eCourts India</Link></li>
             </ul>
           </div>
         </div>

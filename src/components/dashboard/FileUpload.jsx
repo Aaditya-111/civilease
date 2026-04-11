@@ -99,8 +99,46 @@ export function FileUpload({ sampleText = "" }) {
     }
   };
 
+  const loadingSteps = [
+    "Reading your document...",
+    "Identifying document type...",
+    "Extracting legal requirements...",
+    "Translating to your language...",
+    "Building your action plan...",
+    "Almost ready..."
+  ];
+  const [currentStep, setCurrentStep] = useState(0);
+
+  useEffect(() => {
+    let interval;
+    if (loading) {
+      setCurrentStep(0);
+      interval = setInterval(() => {
+        setCurrentStep((prev) => (prev < loadingSteps.length - 1 ? prev + 1 : prev));
+      }, 3000);
+    } else {
+      setCurrentStep(0);
+      if (interval) clearInterval(interval);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [loading]);
+
   return (
     <div className="w-full max-w-2xl mx-auto bg-white rounded-xl p-8 gov-shadow gov-border relative z-30">
+      
+      {loading && (
+        <div className="absolute inset-x-8 inset-y-8 bg-white z-50 flex flex-col items-center justify-center text-center">
+            <h3 className="text-2xl md:text-3xl font-black text-primary uppercase tracking-tighter mb-4">
+              {loadingSteps[currentStep]}
+            </h3>
+            <p className="text-text-muted text-xs font-bold uppercase tracking-widest">
+              Please wait while CivilEase AI processes your file
+            </p>
+        </div>
+      )}
+
       <div className="flex gap-1 mb-8 p-1 bg-surface rounded-lg">
         <button
           onClick={() => setMode("file")}
@@ -140,7 +178,10 @@ export function FileUpload({ sampleText = "" }) {
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
           />
           {uploadingPdf ? (
-            <Loader2 className="w-12 h-12 text-primary mb-4 animate-spin disabled-spin" style={{animation: 'none'}} />
+            <div className="flex flex-col items-center">
+               <FileText className="w-12 h-12 text-primary opacity-20 mb-4" />
+               <p className="text-primary font-bold">Scanning PDF...</p>
+            </div>
           ) : fileName ? (
             <>
               <FileText className="w-12 h-12 text-primary mb-4" />
@@ -186,7 +227,7 @@ export function FileUpload({ sampleText = "" }) {
           className="w-full sm:w-auto flex items-center justify-center gap-3 bg-secondary hover:bg-secondary/90 disabled:opacity-50 disabled:cursor-not-allowed text-white px-10 py-3.5 rounded-md font-bold text-sm uppercase tracking-widest shadow-lg shadow-secondary/20 transition-all font-headlines"
         >
           {loading ? (
-            "Analyzing..."
+            "Processing..."
           ) : (
             <>
               <span>Simplify Now</span>

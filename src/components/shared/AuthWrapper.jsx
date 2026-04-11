@@ -10,7 +10,7 @@ export default function AuthWrapper({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem("civicUser");
+    const saved = localStorage.getItem("civileaseUser");
     if (saved) setUser(JSON.parse(saved));
   }, []);
 
@@ -20,7 +20,7 @@ export default function AuthWrapper({ children }) {
         onSignInClick={() => setIsAuthOpen(true)} 
         user={user} 
         onSignOut={() => {
-          localStorage.removeItem("civicUser");
+          localStorage.removeItem("civileaseUser");
           setUser(null);
         }}
       />

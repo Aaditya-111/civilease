@@ -21,7 +21,7 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }) {
       email: formData.email
     };
 
-    localStorage.setItem("civicUser", JSON.stringify(userData));
+    localStorage.setItem("civileaseUser", JSON.stringify(userData));
     onAuthSuccess(userData);
     onClose();
   };

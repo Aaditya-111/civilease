@@ -6,9 +6,10 @@ const hf = new HfInference(process.env.HF_TOKEN || "");
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { text, language } = body;
+    const { text, language, forceLanguage } = body;
+    const targetLanguage = forceLanguage === "English" ? "English" : language;
 
-    if (!text || !language) {
+    if (!text || !targetLanguage) {
       return NextResponse.json(
         { success: false, error: "Text and language are required" },
         { status: 400 }
@@ -63,12 +64,12 @@ Rules for extraction:
     "ward_officer": "string"
   },
   "simplified_summary": "plain language summary",
-  "language": "${language}",
+  "language": "${targetLanguage}",
   "mermaid": "valid mermaid.js flowchart. Rules: 1. Use short text. 2. ALWAYS wrap node labels in double quotes like A[\"Label\"]. 3. Do not use markdown inside."
 }
-IMPORTANT: You MUST respond entirely in ${language}. 
+IMPORTANT: You MUST respond entirely in ${targetLanguage}. 
 Every single field in the JSON — summary, steps, documents_required, authority — 
-must be written in ${language} script. 
+must be written in ${targetLanguage} script. 
 Do not use English at all if the language is not English.
 IMPORTANT: DO NOT use markdown code blocks like \`\`\`json. Return raw JSON text only.
 

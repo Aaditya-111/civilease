@@ -15,7 +15,21 @@ export default function Home() {
     {
       title: "Property Tax Notice",
       icon: <FileText className="w-5 h-5" />,
-      text: "Final Demand Notice: Property ID: 1045/BBMP. Your property tax for the financial year 2023-24 totaling INR 14,500 remains outstanding. Failure to remit by 31st May will incur an interest of 2% per month and potential seizure of assets under Section 108 of the Municipal Act."
+      text: `BRUHAT BENGALURU MAHANAGARA PALIKE
+Property Tax Demand Notice — Financial Year 2025-26
+
+To: Sri Ramesh Kumar Sharma
+Property No: BBMP/KR/2024/04471
+Site No. 14, 3rd Cross, Rajajinagar, Bengaluru - 560010
+
+This notice is issued under Section 114 of the Karnataka Municipal Corporations Act, 1976, to inform you that a sum of Rs. 14,500/- (Rupees Fourteen Thousand Five Hundred Only) is outstanding as property tax for the financial year 2025-26. The amount includes the base tax of Rs. 12,200/- and library cess of Rs. 2,300/-.
+
+You are hereby directed to pay the full outstanding amount on or before 31st May 2025 at the designated BBMP ward office or through the official online portal at bbmptax.karnataka.gov.in. Failure to remit payment within the stipulated period shall attract a penalty interest of 2% per month. 
+
+In the event of continued non-payment beyond 60 days, the competent authority reserves the right to initiate attachment proceedings against the property. The property owner is advised to produce this notice along with previous tax paid receipts at the time of payment.
+
+Reference: BBMP/ARO/WD34/2025/1147
+Issued by: Assistant Revenue Officer, Ward No. 34, Rajajinagar`
     },
     {
       title: "Court Summons",
