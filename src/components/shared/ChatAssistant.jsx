@@ -1,16 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { MessageSquare, X, Send } from "lucide-react";
 
-export function ChatAssistant({ documentContext = "" }) {
+export function ChatAssistant({ documentContext = "", documentType = "" }) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showHint, setShowHint] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      scrollToBottom();
+    }
+  }, [messages, loading, isOpen]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -94,7 +105,7 @@ export function ChatAssistant({ documentContext = "" }) {
                 className={`mb-4 max-w-[80%] p-3 text-sm rounded ${
                   m.role === "user" 
                     ? "self-end bg-secondary text-white rounded-tr-none" 
-                    : "self-start bg-gray-100 text-text-main rounded-tl-none border border-border"
+                    : "self-start bg-gray-100 text-primary font-medium rounded-tl-none border border-border/50"
                 }`}
               >
                 {m.content}
@@ -102,10 +113,11 @@ export function ChatAssistant({ documentContext = "" }) {
             ))}
 
             {loading && (
-              <div className="mb-4 self-start bg-gray-100 text-text-muted border border-border p-3 text-sm rounded rounded-tl-none">
+              <div className="mb-4 self-start bg-gray-100 text-primary font-medium border border-border/50 p-3 text-sm rounded rounded-tl-none">
                 Thinking...
               </div>
             )}
+            <div ref={messagesEndRef} />
           </div>
 
           {/* Input Area */}
@@ -115,7 +127,7 @@ export function ChatAssistant({ documentContext = "" }) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
-              placeholder="Type your question..."
+              placeholder={documentType ? `Ask me anything about your ${documentType} notice...` : "Ask me anything about this document..."}
               className="flex-1 border border-border rounded px-3 py-2 text-sm text-text-main focus:outline-none"
             />
             <button 

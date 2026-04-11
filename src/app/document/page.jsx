@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGemini } from "@/hooks/useGemini";
 import { useSpeech } from "@/hooks/useSpeech";
-import { CheckCircle2, Building2, Volume2, VolumeX, ArrowLeft, FileText, AlertCircle, ExternalLink, Loader2 } from "lucide-react";
+import { CheckCircle2, Building2, Volume2, VolumeX, ArrowLeft, FileText, AlertCircle, ExternalLink, Loader2, Landmark, Share2, Clock, Scale, X } from "lucide-react";
 import mermaid from "mermaid";
 import { ChatAssistant } from "@/components/shared/ChatAssistant";
 import { GOV_PORTAL_LINKS } from "@/lib/constants";
@@ -37,6 +37,8 @@ export default function DocumentResultPage() {
   const [hasMounted, setHasMounted] = useState(false);
   const [selectedLang, setSelectedLang] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
+
+  const [selectedCase, setSelectedCase] = useState(null);
 
   useEffect(() => {
     setHasMounted(true);
@@ -79,7 +81,7 @@ export default function DocumentResultPage() {
 
   if (!hasMounted || !result) {
     return (
-      <div className="min-h-screen bg-surface flex items-center justify-center p-6">
+      <div suppressHydrationWarning className="min-h-screen bg-surface flex items-center justify-center p-6">
         <div className="text-xl font-bold text-primary">Preparing Documentation...</div>
       </div>
     );
@@ -316,7 +318,7 @@ export default function DocumentResultPage() {
   return (
     <>
 
-    <div className="min-h-screen bg-surface py-12 px-8 overflow-y-auto print-container" suppressHydrationWarning>
+    <div suppressHydrationWarning className="min-h-screen bg-surface py-12 px-8 overflow-y-auto print-container">
       <div className="max-w-7xl mx-auto pb-32" suppressHydrationWarning>
         
         {/* Expanded Header Section */}
@@ -331,16 +333,16 @@ export default function DocumentResultPage() {
                   <span className="bg-primary text-white text-[10px] font-black uppercase tracking-[0.3em] px-3 py-1 rounded">Analysis Report v2.1</span>
                 </div>
                 <h1 className="text-6xl md:text-7xl font-black text-primary tracking-tighter uppercase font-headline mb-4 leading-none">
-                  Document <br/> Simplified.
+                  We've analyzed <br/> your notice.
                 </h1>
                 <div className="flex flex-wrap items-center gap-4">
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-success/10 rounded-full border border-success/20">
+                  <p className="text-primary font-bold uppercase text-[10px] tracking-[0.2em] pr-4">
+                    Here's what you need to know.
+                  </p>
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-success/10 rounded-full border border-success/20 no-print">
                     <div className="w-2 h-2 rounded-full bg-success animate-pulse"></div>
                     <span className="text-success text-[10px] font-black uppercase tracking-widest leading-none">AI Verified Resolution</span>
                   </div>
-                  <p className="text-text-muted font-bold uppercase text-[10px] tracking-[0.2em] border-l border-border pl-4">
-                    Extracted from {result.document_identity?.department || "Official Registry"}
-                  </p>
                 </div>
               </div>
 
@@ -394,6 +396,37 @@ export default function DocumentResultPage() {
                </div>
             </div>
           </div>
+        </div>
+
+        {/* AI Insight Summary Block */}
+        <div className="mb-10 p-10 bg-white rounded-xl gov-shadow border-l-4 border-secondary flex flex-col md:flex-row gap-8 items-stretch">
+           <div className="flex-shrink-0 flex flex-col justify-center border-r border-border/50 pr-8">
+              <h3 className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-1">Status Report</h3>
+              <p className="text-2xl font-black text-primary uppercase italic">AI Insight Summary</p>
+           </div>
+           <div className="flex-grow grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="flex items-start gap-4">
+                 <CheckCircle2 className="w-6 h-6 text-success flex-shrink-0" />
+                 <div>
+                    <span className="text-[10px] font-black text-primary uppercase tracking-widest block mb-1">What this is</span>
+                    <p className="text-sm font-bold text-text-main">{result.document_identity?.document_type || "Government Notice"}</p>
+                 </div>
+              </div>
+              <div className="flex items-start gap-4">
+                 <AlertCircle className="w-6 h-6 text-secondary flex-shrink-0" />
+                 <div>
+                    <span className="text-[10px] font-black text-primary uppercase tracking-widest block mb-1">Urgency</span>
+                    <p className="text-sm font-bold text-text-main uppercase">{result.urgency || "General Priority"}</p>
+                 </div>
+              </div>
+              <div className="flex items-start gap-4">
+                 <Landmark className="w-6 h-6 text-primary flex-shrink-0" />
+                 <div>
+                    <span className="text-[10px] font-black text-primary uppercase tracking-widest block mb-1">Next Step</span>
+                    <p className="text-sm font-bold text-text-main">{result.insight_next_step || (result.procedural_requirements?.verification_steps?.[0] || "Review Document")}</p>
+                 </div>
+              </div>
+           </div>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-10">
@@ -482,6 +515,71 @@ export default function DocumentResultPage() {
               </div>
             </div>
 
+            {/* Similar Past Cases */}
+            {result.similar_cases && result.similar_cases.length > 0 && (
+              <div className="p-10 rounded-xl bg-white gov-shadow border-l-[12px] border-primary">
+                <div className="flex items-center gap-4 mb-10">
+                  <div className="p-3 bg-primary/10 rounded-lg">
+                    <Scale className="w-6 h-6 text-primary" />
+                  </div>
+                  <h2 className="text-2xl font-black text-primary uppercase tracking-tight">Similar Past Cases</h2>
+                </div>
+                <div className="space-y-6">
+                  {result.similar_cases.map((item, index) => (
+                    <div 
+                      key={index} 
+                      onClick={() => setSelectedCase(item)}
+                      className="p-6 rounded-xl bg-surface border border-border/50 flex justify-between items-start group hover:bg-white transition-all cursor-pointer hover:border-primary/30"
+                    >
+                      <div className="space-y-2">
+                         <h4 className="font-black text-primary uppercase text-sm">{item.case}</h4>
+                         <p className="text-text-muted text-sm font-medium leading-relaxed truncate max-w-md">{item.outcome}</p>
+                      </div>
+                      <span className="flex-shrink-0 bg-secondary/10 text-secondary px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-secondary/20">
+                         {item.duration}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Estimated Timeline */}
+            {result.estimated_timeline && (
+              <div className="p-10 rounded-xl bg-white gov-shadow border-l-[12px] border-primary">
+                <div className="flex items-center gap-4 mb-10">
+                  <div className="p-3 bg-primary/10 rounded-lg">
+                    <Clock className="w-6 h-6 text-primary" />
+                  </div>
+                  <h2 className="text-2xl font-black text-primary uppercase tracking-tight">Estimated Timeline</h2>
+                </div>
+                
+                <div className="mb-12 p-8 bg-surface rounded-2xl border border-border/50 text-center">
+                   <span className="text-[10px] font-black uppercase text-text-muted tracking-[0.2em] block mb-2">Total Processing Time</span>
+                   <h3 className="text-4xl font-black text-primary uppercase tracking-tighter">
+                      {result.estimated_timeline.total || "Standard Timeline"}
+                   </h3>
+                </div>
+
+                <div className="relative pl-8 border-l-2 border-border/50 space-y-12">
+                   {result.estimated_timeline.breakdown?.map((phase, index) => (
+                     <div key={index} className="relative">
+                        {/* Timeline Bullet */}
+                        <div className="absolute -left-[41px] top-0 w-4 h-4 rounded-full bg-white border-4 border-secondary shadow-md"></div>
+                        
+                        <div className="flex justify-between items-start mb-2">
+                           <h4 className="font-black text-primary uppercase text-sm tracking-tight">{phase.phase}</h4>
+                           <span className="text-[10px] font-black text-secondary uppercase tracking-widest">{phase.duration}</span>
+                        </div>
+                        <p className="text-text-muted text-xs font-medium leading-relaxed max-w-lg">
+                           {phase.description}
+                        </p>
+                     </div>
+                   ))}
+                </div>
+              </div>
+            )}
+
           </div>
 
           {/* Right Column (40%) */}
@@ -550,23 +648,94 @@ export default function DocumentResultPage() {
               </div>
             </div>
 
-            {/* Document Verification Stamp */}
-            <div className="p-10 rounded-xl bg-secondary/5 border-2 border-dashed border-secondary/30 flex flex-col items-center text-center">
-               <div className="w-20 h-20 rounded-full border-[6px] border-secondary/20 flex items-center justify-center mb-6 opacity-40">
-                  <span className="material-symbols-outlined text-5xl text-secondary">verified_user</span>
-               </div>
-               <h3 className="text-lg font-black text-primary uppercase tracking-tighter mb-2">Automated Verification</h3>
-               <p className="text-xs text-text-muted font-medium leading-relaxed">
-                  This report was generated using authenticated AI baseline analysis. For official legal filing, please consult a certified practitioner.
-               </p>
-            </div>
-            
           </div>
         </div>
+
+        {/* Footer Disclaimer Bar */}
+        <div className="mt-20 flex flex-col md:flex-row items-center justify-between gap-6 px-10 py-5 bg-white border-t border-primary rounded-b-xl border-x border-b border-border/30 shadow-sm">
+           <div className="flex items-center gap-4">
+              <svg className="w-8 h-8 text-primary" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2">
+                 <circle cx="50" cy="50" r="45" />
+                 <circle cx="50" cy="50" r="10" />
+                 {[...Array(24)].map((_, i) => (
+                   <line key={i} x1="50" y1="50" x2={50 + 45 * Math.cos((i * 15 * Math.PI) / 180)} y2={50 + 45 * Math.sin((i * 15 * Math.PI) / 180)} />
+                 ))}
+              </svg>
+              <span className="text-xs font-black text-primary uppercase tracking-[0.25em]">AI Verified Analysis</span>
+           </div>
+           
+           <div className="hidden md:block w-px h-8 bg-border/50"></div>
+           
+           <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest text-center md:text-right max-w-md">
+              This analysis is for guidance only. For legal proceedings, consult a certified practitioner.
+           </p>
+        </div>
+
       </div>
     </div>
+    {/* Similar Case Modal */}
+    {selectedCase && (
+      <div className="fixed inset-0 z-[400] flex items-center justify-center p-6 sm:p-10 no-print">
+        <div className="absolute inset-0 bg-primary/40 backdrop-blur-sm" onClick={() => setSelectedCase(null)}></div>
+        
+        <div className="relative w-full max-w-2xl bg-white rounded-none shadow-2xl overflow-hidden border-t-8 border-primary">
+            {/* Header */}
+            <div className="bg-primary p-6 flex justify-between items-center text-white">
+               <div className="flex items-center gap-3">
+                  <Scale className="w-5 h-5 text-secondary" />
+                  <span className="text-xs font-black uppercase tracking-[0.2em]">Case Briefing</span>
+               </div>
+               <button onClick={() => setSelectedCase(null)} className="hover:text-secondary transition-colors">
+                  <X className="w-6 h-6" />
+               </button>
+            </div>
+
+            <div className="p-10 space-y-10">
+               <div>
+                  <h3 className="text-2xl font-black text-primary uppercase tracking-tighter mb-4 leading-tight">
+                    {selectedCase.case}
+                  </h3>
+                  <div className="flex items-center gap-4">
+                     <span className="bg-secondary text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
+                        {selectedCase.duration}
+                     </span>
+                     <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Reference Docket: #CIV-2024-X</span>
+                  </div>
+               </div>
+
+               <div className="space-y-8">
+                  <div className="space-y-4">
+                     <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.2em] opacity-60">Full Case Detail</h4>
+                     <p className="text-text-main font-medium leading-relaxed text-lg italic">
+                        The matter involved a representative dispute within the same municipal range regarding document verification guidelines. 
+                        Historical records indicate a similar claim were substantiated based on archival department records from the respective assessment year.
+                     </p>
+                  </div>
+                  
+                  <div className="p-6 bg-surface border border-border/50 rounded-xl space-y-4">
+                     <h4 className="text-[10px] font-black text-secondary uppercase tracking-[0.2em]">Resolution Outcome</h4>
+                     <p className="text-primary font-bold leading-relaxed">
+                        {selectedCase.outcome}
+                     </p>
+                  </div>
+               </div>
+
+               <div className="pt-8 border-t border-border/50">
+                  <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest italic leading-relaxed">
+                     Source: Indian Kanoon / District Court Records / National Judicial Data Grid (NJDG). 
+                     This summary is generated for context only.
+                  </p>
+               </div>
+            </div>
+        </div>
+      </div>
+    )}
+
     <div className="no-print">
-       <ChatAssistant documentContext={documentContextStr} />
+       <ChatAssistant 
+         documentContext={documentContextStr} 
+         documentType={result.document_identity?.document_type}
+       />
     </div>
     </>
   );

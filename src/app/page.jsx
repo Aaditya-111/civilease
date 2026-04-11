@@ -40,6 +40,11 @@ Issued by: Assistant Revenue Officer, Ward No. 34, Rajajinagar`
       title: "Ration Card Application",
       icon: <BadgeInfo className="w-5 h-5" />,
       text: "Department of Food and Civil Supplies. Application Status: PENDING. Requirement: The applicant (UIDAI: 89XX-XXXX) has failed to provide a valid income certificate for the current fiscal year. Please visit the Circle Office (Ward 14) with original Aadhar and updated Bank Passbook to proceed with E-KYC verification."
+    },
+    {
+      title: "Income Tax Notice",
+      icon: <BadgeInfo className="w-5 h-5" />,
+      text: "INCOME TAX DEPARTMENT — GOVERNMENT OF INDIA Notice Under Section 143(2) of the Income Tax Act, 1961 PAN: ABCPK7823M | Assessment Year: 2024-25 To: Sri Prakash Venkataraman 42, Anna Nagar, Chennai - 600040 Your income tax return filed for AY 2024-25 declaring total income of Rs. 8,40,000/-  has been selected for scrutiny assessment under Section 143(2) of the Income Tax Act,  1961. Discrepancies have been identified between income declared and Form 26AS data  reflecting TDS credits of Rs. 11,20,000/-. You are required to appear before the undersigned Income Tax Officer, Ward 3(1),  Chennai on 05th May 2025 at 11:00 AM with the following documents: 1. Original and copy of ITR filed for AY 2024-25 2. Bank statements for all accounts for FY 2023-24 3. Form 16/16A issued by all employers and deductors 4. Proof of all investments claimed under Chapter VI-A 5. Details of all immovable property transactions during FY 2023-24 Failure to comply with this notice shall result in best judgment assessment under  Section 144 of the Act. Penalty under Section 271(1)(b) of Rs. 10,000/- may be  levied for non-compliance. Issued by: Income Tax Officer, Ward 3(1), Chennai Date: 03 April 2025 | DIN: ITBA/AST/2025/038471"
     }
   ];
 
@@ -50,13 +55,13 @@ Issued by: Assistant Revenue Officer, Ward No. 34, Rajajinagar`
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <defs>
               <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.5" />
               </pattern>
             </defs>
             <rect width="100" height="100" fill="url(#grid)" />
           </svg>
         </div>
-        
+
         <div className="relative z-20 max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-20 items-center">
           <div className="space-y-10">
             <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-surface border border-border">
@@ -70,13 +75,13 @@ Issued by: Assistant Revenue Officer, Ward No. 34, Rajajinagar`
               Upload any legal notice or government form. We translate complex bureaucracy into plain language and actionable steps.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
-              <button 
+              <button
                 onClick={() => handleScrollTo('upload-section')}
                 className="px-10 py-5 bg-secondary text-white rounded-md font-bold text-lg shadow-xl shadow-secondary/20 transition-all hover:-translate-y-1"
               >
                 Start Your Analysis
               </button>
-              <button 
+              <button
                 onClick={() => handleScrollTo('how-it-works')}
                 className="px-10 py-5 bg-white text-primary border-2 border-primary rounded-md font-bold text-lg hover:bg-surface transition-all"
               >
@@ -84,21 +89,21 @@ Issued by: Assistant Revenue Officer, Ward No. 34, Rajajinagar`
               </button>
             </div>
           </div>
-          
+
           <div className="hidden lg:block relative">
             <div className="absolute -inset-20 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
-            
+
             <div className="relative z-10 w-[550px] h-[550px] flex items-center justify-center">
               {/* Primary 3D Image */}
-              <img 
-                src="/hero-building.png" 
-                alt="Government Civil Infrastructure" 
+              <img
+                src="/hero-building.png"
+                alt="Government Civil Infrastructure"
                 className="w-[450px] h-[450px] object-contain relative z-20 animate-float"
               />
-              
+
               {/* Floating Assets removed for cleaner code in this turn */}
               <div className="absolute top-0 -left-10 w-32 h-32 bg-white rounded-2xl shadow-2xl border border-secondary/20 p-4 flex items-center justify-center animate-float-delayed z-30">
-                 <span className="material-symbols-outlined text-6xl text-primary opacity-20">architecture</span>
+                <span className="material-symbols-outlined text-6xl text-primary opacity-20">architecture</span>
               </div>
             </div>
           </div>
@@ -111,7 +116,7 @@ Issued by: Assistant Revenue Officer, Ward No. 34, Rajajinagar`
             <h2 className="text-3xl font-black text-primary uppercase tracking-tighter mb-4">Try a Sample Analysis</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-8">
               {samples.map((sample, index) => (
-                <div 
+                <div
                   key={index}
                   className="bg-white p-6 rounded-xl border border-border group hover:border-primary transition-all cursor-pointer shadow-sm hover:shadow-md"
                   onClick={() => {
@@ -164,11 +169,11 @@ Issued by: Assistant Revenue Officer, Ward No. 34, Rajajinagar`
         <div className="relative z-10 max-w-4xl mx-auto px-8 text-center space-y-12">
           <h2 className="text-5xl md:text-7xl font-black text-white leading-tight">Empowering 1.4 Billion Indian Citizens</h2>
           <p className="text-2xl text-white/70 leading-relaxed font-light">CivilEase bridges the information gap, making public services more transparent and accessible through AI intelligence.</p>
-          <button 
+          <button
             onClick={() => handleScrollTo('upload-section')}
             className="px-16 py-6 bg-secondary text-white rounded-md font-black text-2xl shadow-2xl transition-all hover:scale-105 active:scale-95"
           >
-             Analyze Your first Document
+            Analyze Your first Document
           </button>
         </div>
       </section>

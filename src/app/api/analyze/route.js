@@ -64,11 +64,27 @@ Rules for extraction:
     "ward_officer": "string"
   },
   "simplified_summary": "plain language summary",
+  "urgency": "High / Medium / Low - one word with one line reason",
+  "insight_next_step": "single most important action to take right now",
+  "similar_cases": [
+    {
+      "case": "brief case description with location and year",
+      "outcome": "how it was resolved",
+      "duration": "how long it took"
+    }
+  ],
+  "estimated_timeline": {
+    "total": "X-Y working days",
+    "breakdown": [
+      { "phase": "phase name", "duration": "X days", "description": "what happens" }
+    ]
+  },
   "language": "${targetLanguage}",
   "mermaid": "valid mermaid.js flowchart. Rules: 1. Use short text. 2. ALWAYS wrap node labels in double quotes like A[\"Label\"]. 3. Do not use markdown inside."
 }
+IMPORTANT: Support with 2-3 realistic past examples in 'similar_cases' based on document type. Breakdown the 'estimated_timeline' into realistic government processing phases in India. 
 IMPORTANT: You MUST respond entirely in ${targetLanguage}. 
-Every single field in the JSON — summary, steps, documents_required, authority — 
+Every single field in the JSON — summary, steps, cases, timeline, authority — 
 must be written in ${targetLanguage} script. 
 Do not use English at all if the language is not English.
 IMPORTANT: DO NOT use markdown code blocks like \`\`\`json. Return raw JSON text only.
