@@ -48,7 +48,7 @@ export default function GovernancePage() {
                 <Scale className="w-12 h-12 text-secondary mb-8" />
                 <h2 className="text-4xl font-black text-primary uppercase tracking-tighter mb-6">Legal Framework</h2>
                 <p className="text-text-muted font-medium leading-relaxed mb-8 text-lg">
-                    CivicEase operates within the ambit of the Information Technology Act and the latest Indian Govt. Digital Personal Data Protection (DPDP) norms.
+                    CivilEase operates within the ambit of the Information Technology Act and the latest Indian Govt. Digital Personal Data Protection (DPDP) norms.
                 </p>
                 <div className="space-y-4">
                     {["End-to-end Encryption", "Consent-based analysis", "No persistent storage of citizen documents"].map((f, i) => (

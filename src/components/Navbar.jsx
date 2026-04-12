@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function Navbar() {
+export default function Navbar({ onSignInClick, user, onSignOut }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -28,6 +28,22 @@ export default function Navbar() {
     { href: "/governance", label: "Governance" },
     { href: "/resources", label: "Resources" }
   ];
+  const navLinks = [
+    { name: "Platform", href: "/" },
+    { name: "Solutions", href: "/solutions" },
+    { name: "Governance", href: "/governance" },
+    { name: "Resources", href: "/resources" }
+  ];
+
+  const handleScrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.location.href = `/#${id}`;
+    }
+    setOpen(false);
+  };
 
   return (
     <nav className="fixed top-[3px] w-full z-[100] bg-white border-b border-border">
@@ -52,8 +68,8 @@ export default function Navbar() {
               );
             })}
           </svg>
-          <div className="text-2xl font-extrabold tracking-tight text-primary font-headline">
-            <Link href="/">CivicEase</Link>
+          <div className="text-2xl font-extrabold tracking-tight text-primary font-headline text-stroke-primary">
+            <Link href="/">CivilEase</Link>
           </div>
         </div>
         
@@ -63,11 +79,59 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`transition-all font-headline text-sm uppercase tracking-widest pb-1 ${
+                  isActive 
+                    ? "text-primary font-black border-b-2 border-secondary" 
+                    : "text-text-muted font-bold hover:text-primary"
+                }`}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
+          <button 
+            onClick={() => handleScrollTo('how-it-works')}
+            className="text-text-muted hover:text-primary transition-colors font-headline text-sm uppercase tracking-widest font-bold"
+          >
+            How it Works
+          </button>
         </div>
 
         <div className="hidden md:flex gap-4 items-center">
-          <button className="px-5 py-2 text-text-muted hover:text-primary transition-all font-headline font-bold text-sm">Sign In</button>
-          <button className="px-8 py-3 bg-secondary text-white rounded-md font-headline font-bold text-sm hover:bg-secondary/90 transition-colors shadow-md">Get Started</button>
+          {user ? (
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 bg-primary text-white flex items-center justify-center rounded-full font-black text-sm uppercase">
+                {user.name.charAt(0)}
+              </div>
+              <button 
+                onClick={onSignOut}
+                className="text-text-muted hover:text-primary font-bold text-xs uppercase tracking-widest transition-all"
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <>
+              <button 
+                onClick={onSignInClick}
+                className="px-5 py-2 text-text-muted hover:text-primary transition-all font-headline font-bold text-sm"
+              >
+                Sign In
+              </button>
+              <button 
+                onClick={() => handleScrollTo('upload-section')}
+                className="px-8 py-3 bg-secondary text-white rounded-md font-headline font-bold text-sm hover:bg-secondary/90 transition-colors shadow-md"
+              >
+                Get Started
+              </button>
+            </>
+          )}
         </div>
 
         <button
@@ -94,9 +158,49 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  onClick={() => setOpen(false)}
+                  href={link.href}
+                  className={`font-headline text-sm uppercase tracking-widest transition-all ${
+                    isActive ? "text-primary font-black ml-2" : "text-text-muted font-bold"
+                  }`}
+                >
+                  {isActive && "• "} {link.name}
+                </Link>
+              );
+            })}
+            <button 
+              onClick={() => handleScrollTo('how-it-works')}
+              className="text-left font-headline text-sm uppercase tracking-widest font-bold text-text-muted"
+            >
+              How it Works
+            </button>
             <div className="mt-4 flex flex-col gap-3">
-              <button className="w-full px-5 py-2 text-text-muted hover:text-primary transition-all font-headline font-bold text-sm text-left">Sign In</button>
-              <button className="w-full px-8 py-3 bg-secondary text-white rounded-md font-headline font-bold text-sm hover:bg-secondary/90 transition-colors shadow-md">Get Started</button>
+              {user ? (
+                 <div className="flex items-center justify-between p-4 bg-surface rounded-lg">
+                    <span className="font-black text-primary uppercase text-xs">{user.name}</span>
+                    <button onClick={onSignOut} className="text-secondary font-black text-xs uppercase">Sign Out</button>
+                 </div>
+              ) : (
+                <>
+                  <button 
+                    onClick={onSignInClick}
+                    className="w-full px-5 py-2 text-text-muted hover:text-primary transition-all font-headline font-bold text-sm text-left"
+                  >
+                    Sign In
+                  </button>
+                  <button 
+                    onClick={() => handleScrollTo('upload-section')}
+                    className="w-full px-8 py-3 bg-secondary text-white rounded-md font-headline font-bold text-sm hover:bg-secondary/90 transition-colors shadow-md"
+                  >
+                    Get Started
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -53,7 +53,7 @@ export default function SolutionsPage() {
                 Empowering <br/> The Citizenry.
             </h1>
             <p className="max-w-2xl mx-auto text-text-muted text-lg font-medium leading-relaxed">
-                CivicEase provides a suite of advanced AI technologies designed to simplify governance and clarify the citizen-state relationship.
+                CivilEase provides a suite of advanced AI technologies designed to simplify governance and clarify the citizen-state relationship.
             </p>
         </div>
 

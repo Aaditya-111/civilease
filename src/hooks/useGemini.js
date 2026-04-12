@@ -4,7 +4,7 @@ export function useGemini() {
   const [result, setResult] = useState(() => {
     if (typeof window !== "undefined") {
       try {
-        const stored = sessionStorage.getItem("civicEaseResult");
+        const stored = sessionStorage.getItem("civileaseResult");
         return stored ? JSON.parse(stored) : null;
       } catch (err) {
         return null;
@@ -34,7 +34,8 @@ export function useGemini() {
       } else {
         setResult(json.data);
         if (typeof window !== "undefined") {
-          sessionStorage.setItem("civicEaseResult", JSON.stringify(json.data));
+          sessionStorage.setItem("civileaseResult", JSON.stringify(json.data));
+          sessionStorage.setItem("civileaseRawText", text);
         }
         return true;
       }

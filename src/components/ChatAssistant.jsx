@@ -6,7 +6,7 @@ import { MessageSquare, X, Send, User, Bot } from "lucide-react";
 export function ChatAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Namaste! I am your CivicEase assistant. How can I help you with government procedures today?" }
+    { role: "assistant", content: "Namaste! I am your CivilEase assistant. How can I help you with government procedures today?" }
   ]);
   const [input, setInput] = useState("");
 
@@ -41,7 +41,7 @@ export function ChatAssistant() {
         <div className="fixed bottom-28 right-8 w-96 h-[500px] bg-white rounded-2xl gov-shadow border border-border z-[150] flex flex-col overflow-hidden">
           {/* Header */}
           <div className="bg-primary p-6 text-white">
-            <h3 className="text-lg font-bold">CivicEase Support</h3>
+            <h3 className="text-lg font-bold">CivilEase Support</h3>
             <p className="text-[10px] uppercase tracking-widest opacity-70">Official Citizen Assistant</p>
           </div>
 

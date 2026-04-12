@@ -13,6 +13,7 @@
     "@heyputer/puter.js": "^2.2.15",
     "@huggingface/inference": "^4.13.15",
     "framer-motion": "^12.38.0",
+    "jspdf": "^4.2.1",
     "lucide-react": "^1.8.0",
     "mermaid": "^11.14.0",
     "next": "16.2.3",

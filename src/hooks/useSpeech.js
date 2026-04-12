@@ -1,36 +1,28 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState } from "react";
+import { SUPPORTED_LANGUAGES } from "@/lib/constants";
 
-export function useSpeech() {
+export const useSpeech = () => {
   const [speaking, setSpeaking] = useState(false);
 
-  useEffect(() => {
-    return () => {
-      window.speechSynthesis.cancel();
-    };
-  }, []);
+  const speak = (text, languageValue) => {
+    if (speaking) {
+      stop();
+      return;
+    }
 
-  const speak = (text, speechCode) => {
-    window.speechSynthesis.cancel();
+    const language = SUPPORTED_LANGUAGES.find(l => l.value === languageValue);
+    const speechCode = language?.speechCode || "en-US";
+
+    // Use Native Web Speech API
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = speechCode;
-
-    const trySpeak = () => {
-      const voices = window.speechSynthesis.getVoices();
-      const match = voices.find(v => v.lang.startsWith(speechCode.split('-')[0]));
-      if (match) utterance.voice = match;
-      utterance.onstart = () => setSpeaking(true);
-      utterance.onend = () => setSpeaking(false);
-      utterance.onerror = () => setSpeaking(false);
-      window.speechSynthesis.speak(utterance);
-    };
-
-    if (window.speechSynthesis.getVoices().length === 0) {
-      window.speechSynthesis.onvoiceschanged = trySpeak;
-    } else {
-      trySpeak();
-    }
+    utterance.onstart = () => setSpeaking(true);
+    utterance.onend = () => setSpeaking(false);
+    utterance.onerror = () => setSpeaking(false);
+    
+    window.speechSynthesis.speak(utterance);
   };
 
   const stop = () => {
@@ -38,5 +30,5 @@ export function useSpeech() {
     setSpeaking(false);
   };
 
-  return { speaking, speak, stop };
-}
+  return { speak, stop, speaking, loading: false };
+};
