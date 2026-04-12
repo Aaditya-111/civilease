@@ -2,9 +2,32 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (path) => {
+    if (path === "/") return pathname === "/";
+    return pathname?.startsWith(path);
+  };
+
+  const getLinkClass = (path) => {
+    const base = "font-headline text-sm uppercase tracking-widest transition-all";
+    if (isActive(path)) {
+      return `${base} text-primary font-bold hover:text-secondary border-b-2 border-secondary pb-1`;
+    }
+    return `${base} text-text-muted hover:text-primary border-b-2 border-transparent pb-1`;
+  };
+
+  const navLinks = [
+    { href: "/", label: "Simplify" },
+    { href: "/fraud-check", label: "FraudShield" },
+    { href: "/solutions", label: "Solutions" },
+    { href: "/governance", label: "Governance" },
+    { href: "/resources", label: "Resources" }
+  ];
 
   return (
     <nav className="fixed top-[3px] w-full z-[100] bg-white border-b border-border">
@@ -35,10 +58,11 @@ export default function Navbar() {
         </div>
         
         <div className="hidden md:flex gap-10 items-center">
-          <Link className="text-primary font-bold hover:text-secondary border-b-2 border-secondary pb-1 font-headline text-sm uppercase tracking-widest transition-all" href="/">Platform</Link>
-          <Link className="text-text-muted hover:text-primary transition-colors font-headline text-sm uppercase tracking-widest" href="/solutions">Solutions</Link>
-          <Link className="text-text-muted hover:text-primary transition-colors font-headline text-sm uppercase tracking-widest" href="/governance">Governance</Link>
-          <Link className="text-text-muted hover:text-primary transition-colors font-headline text-sm uppercase tracking-widest" href="/resources">Resources</Link>
+          {navLinks.map((link) => (
+            <Link key={link.href} className={getLinkClass(link.href)} href={link.href}>
+              {link.label}
+            </Link>
+          ))}
         </div>
 
         <div className="hidden md:flex gap-4 items-center">
@@ -60,10 +84,16 @@ export default function Navbar() {
       {open && (
         <div className="border-t border-border md:hidden bg-white">
           <div className="flex flex-col gap-4 px-8 py-6">
-            <Link className="text-text-muted hover:text-primary transition-colors font-headline text-sm uppercase tracking-widest" href="#">Platform</Link>
-            <Link className="text-text-muted hover:text-primary transition-colors font-headline text-sm uppercase tracking-widest" href="#">Solutions</Link>
-            <Link className="text-text-muted hover:text-primary transition-colors font-headline text-sm uppercase tracking-widest" href="#">Governance</Link>
-            <Link className="text-text-muted hover:text-primary transition-colors font-headline text-sm uppercase tracking-widest" href="#">Resources</Link>
+            {navLinks.map((link) => (
+              <Link 
+                key={link.href} 
+                className={`font-headline text-sm uppercase tracking-widest transition-colors ${isActive(link.href) ? "text-primary font-bold" : "text-text-muted hover:text-primary"}`} 
+                href={link.href}
+                onClick={() => setOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
             <div className="mt-4 flex flex-col gap-3">
               <button className="w-full px-5 py-2 text-text-muted hover:text-primary transition-all font-headline font-bold text-sm text-left">Sign In</button>
               <button className="w-full px-8 py-3 bg-secondary text-white rounded-md font-headline font-bold text-sm hover:bg-secondary/90 transition-colors shadow-md">Get Started</button>
