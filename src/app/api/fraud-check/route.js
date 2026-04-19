@@ -76,6 +76,13 @@ ${text}
 """
 `;
 
+    if (!process.env.HF_TOKEN) {
+      return NextResponse.json(
+        { success: false, error: "HF_TOKEN missing in .env.local! Please add your free Hugging Face API key." },
+        { status: 500 }
+      );
+    }
+
     const response = await hf.chatCompletion({
       model: "Qwen/Qwen2.5-72B-Instruct",
       messages: [{ role: "user", content: prompt }],
@@ -85,17 +92,26 @@ ${text}
 
     let responseText = response.choices[0].message.content;
 
-    // Safer JSON Parser
-    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error("No JSON found in fraud analysis response");
+    let cleanedText = responseText.replace(/```json/gi, '').replace(/```/g, '').trim();
+    const startIndex = cleanedText.indexOf('{');
+    const endIndex = cleanedText.lastIndexOf('}');
+    
+    if (startIndex !== -1 && endIndex !== -1) {
+      cleanedText = cleanedText.slice(startIndex, endIndex + 1);
+    }
 
     let parsed;
     try {
-      parsed = JSON.parse(jsonMatch[0]);
+      parsed = JSON.parse(cleanedText);
     } catch (parseError) {
       console.error("AI returned malformed fraud data:", responseText);
+      const isTruncated = !responseText.trim().endsWith("}");
+      const errorMessage = isTruncated 
+        ? "The AI's response got cut off due to length limits. Please try a shorter document."
+        : "The AI returned malformed data. Check the server console.";
+        
       return NextResponse.json(
-        { success: false, error: "The AI returned malformed data. Please try again." },
+        { success: false, error: errorMessage, raw_output: responseText },
         { status: 500 }
       );
     }
